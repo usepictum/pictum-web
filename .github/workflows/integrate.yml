@@ -1,0 +1,29 @@
+name: Integrate
+
+on:
+  pull_request:
+  workflow_call:
+    inputs:
+      ref:
+        required: false
+        type: string
+
+concurrency:
+  group: integrate-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality
+    uses: ./.github/workflows/quality.yml
+    with:
+      ref: ${{ inputs.ref || github.sha }}
+
+  test:
+    name: Tests
+    uses: ./.github/workflows/test.yml
+    with:
+      ref: ${{ inputs.ref || github.sha }}

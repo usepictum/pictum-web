@@ -1,0 +1,17 @@
+{
+	"name": "@pictum/playground-web",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "vite build",
+		"dev": "vite",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@pictum/web": "workspace:*"
+	},
+	"devDependencies": {
+		"typescript": "^7.0.2",
+		"vite": "^8.1.4"
+	}
+}

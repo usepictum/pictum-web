@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pictum Web Components</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">@pictum/web</p>
+        <h1>One image API, built into the platform.</h1>
+        <p class="lede">
+          Native custom elements with reactive attributes, open shadow roots,
+          and no framework runtime.
+        </p>
+        <div class="platform-notes">
+          <span>Custom Elements</span>
+          <span>Shadow DOM</span>
+          <span>Custom States</span>
+        </div>
+      </header>
+
+      <section class="asset-grid" aria-label="Pictum assets">
+        <article class="asset-card icon-card">
+          <div class="card-heading">
+            <span class="asset-label">Inline SVG</span>
+            <span id="icon-status" class="status">Loading</span>
+          </div>
+          <pictum-icon
+            name="lucide:sparkles"
+            alt="Sparkles"
+            class="hero-icon"
+          ></pictum-icon>
+          <code>lucide:sparkles</code>
+        </article>
+
+        <article class="asset-card avatar-card">
+          <span class="asset-label">Reactive property</span>
+          <pictum-avatar
+            seed="ada-lovelace"
+            variant="gradient"
+            format="webp"
+            alt="Ada Lovelace"
+            class="avatar"
+          ></pictum-avatar>
+          <div class="card-footer">
+            <code id="avatar-seed">ada-lovelace</code>
+            <button id="shuffle-avatar" type="button">Next identity</button>
+          </div>
+        </article>
+
+        <article class="asset-card qr-card">
+          <span class="asset-label">UTF-8 encoded</span>
+          <pictum-qr-code
+            value="https://pictum.dev"
+            alt="Open Pictum"
+            class="qr-code"
+          ></pictum-qr-code>
+          <code>pictum.dev</code>
+        </article>
+
+        <article class="asset-card placeholder-card">
+          <span class="asset-label">Retina ready</span>
+          <pictum-placeholder
+            width="320"
+            height="180"
+            format="webp"
+            density="2"
+            text="Coming soon"
+            alt="Coming soon"
+            class="placeholder"
+          ></pictum-placeholder>
+          <code>320x180@2x</code>
+        </article>
+      </section>
+    </main>
+    <script type="module" src="/src/index.ts"></script>
+  </body>
+</html>
