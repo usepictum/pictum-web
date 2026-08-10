@@ -1,4 +1,4 @@
-# <sub><img src="https://pictum.dev/api/v1/icons/devicon/html5.svg" width="28" /></sub> Pictum Web
+# <sub><img src="https://pictum.dev/api/v1/icons/devicon/html5.svg" width="28" /></sub> Pictum for Web
 
 [![npm version](https://npmx.dev/api/registry/badge/version/@pictum/web?color=bfdbfe&labelColor=404040)](https://npmx.dev/package/@pictum/web)
 [![monthly downloads](https://npmx.dev/api/registry/badge/downloads/@pictum/web?color=fed7aa&labelColor=404040)](https://npmx.dev/package/@pictum/web)
