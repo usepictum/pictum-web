@@ -4,7 +4,7 @@
 [![monthly downloads](https://npmx.dev/api/registry/badge/downloads/@pictum/web?color=fed7aa&labelColor=404040)](https://npmx.dev/package/@pictum/web)
 [![license](https://npmx.dev/api/registry/badge/license/@pictum/web?color=bbf7d0&labelColor=404040)](https://npmx.dev/package/@pictum/web)
 
-[Pictum](https://pictum.dev) asset custom elements and helpers for the web
+[Pictum](https://pictum.dev) asset custom elements and helpers for Web Components
 
 ## Installation
 
