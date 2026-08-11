@@ -104,12 +104,22 @@ describe("elements", () => {
 		qrCode.value = "hello";
 		qrCode.baseUrl = "https://assets.example.com/v1";
 		qrCode.alt = "Hello";
+		Object.defineProperty(qrCode, "foreground", {
+			configurable: true,
+			value: "#11223344",
+			writable: true,
+		});
+		Object.defineProperty(qrCode, "background", {
+			configurable: true,
+			value: "#aabbccdd",
+			writable: true,
+		});
 		mount(avatar, qrCode);
 
 		await vi.waitFor(() => {
 			expect(avatar.shadowRoot?.querySelector("img")).toHaveAttribute(
 				"src",
-				"https://assets.example.com/v1/avatars/gradient/ada-lovelace.webp",
+				"https://assets.example.com/v1/avatar.webp?seed=ada-lovelace&variant=gradient",
 			);
 		});
 
@@ -118,9 +128,19 @@ describe("elements", () => {
 		expect(avatarImage).toHaveAttribute("part", "asset");
 		expect(qrCode.shadowRoot?.querySelector("img")).toHaveAttribute(
 			"src",
-			"https://assets.example.com/v1/qr-codes.svg?data=aGVsbG8%3D",
+			"https://assets.example.com/v1/qrcode.svg?data=aGVsbG8%3D&foreground=%2311223344&background=%23aabbccdd",
 		);
 		expect(qrCode.quietZone).toBeNull();
+		expect(qrCode.foreground).toBe("#11223344");
+		expect(qrCode.background).toBe("#aabbccdd");
+		expect(qrCode).toHaveAttribute("foreground", "#11223344");
+		expect(qrCode).toHaveAttribute("background", "#aabbccdd");
+		expect(qrCode.shadowRoot?.querySelector("img")).not.toHaveAttribute(
+			"foreground",
+		);
+		expect(qrCode.shadowRoot?.querySelector("img")).not.toHaveAttribute(
+			"background",
+		);
 
 		qrCode.quietZone = false;
 		qrCode.format = "jpg";
@@ -129,7 +149,7 @@ describe("elements", () => {
 		await vi.waitFor(() => {
 			expect(qrCode.shadowRoot?.querySelector("img")).toHaveAttribute(
 				"src",
-				"https://assets.example.com/v1/qr-codes.jpg?data=aGVsbG8%3D&quiet_zone=0",
+				"https://assets.example.com/v1/qrcode.jpg?data=aGVsbG8%3D&quiet_zone=0&foreground=%2311223344&background=%23aabbccdd",
 			);
 		});
 
@@ -138,24 +158,68 @@ describe("elements", () => {
 		qrCode.quietZone = null;
 		expect(qrCode).not.toHaveAttribute("quiet-zone");
 		expect(qrCode.quietZone).toBeNull();
+		qrCode.setAttribute("foreground", "#deadbeef");
+		qrCode.background = null;
+		expect(qrCode).not.toHaveAttribute("background");
+		expect(qrCode.background).toBeNull();
+		await vi.waitFor(() => {
+			expect(qrCode.shadowRoot?.querySelector("img")).toHaveAttribute(
+				"src",
+				"https://assets.example.com/v1/qrcode.jpg?data=aGVsbG8%3D&foreground=%23deadbeef",
+			);
+		});
+		qrCode.foreground = null;
+		expect(qrCode).not.toHaveAttribute("foreground");
+		await vi.waitFor(() => {
+			expect(qrCode.shadowRoot?.querySelector("img")).toHaveAttribute(
+				"src",
+				"https://assets.example.com/v1/qrcode.jpg?data=aGVsbG8%3D",
+			);
+		});
 
 		avatar.seed = "grace-hopper";
 		await vi.waitFor(() => {
 			expect(avatar.shadowRoot?.querySelector("img")).toHaveAttribute(
 				"src",
-				"https://assets.example.com/v1/avatars/gradient/grace-hopper.webp",
+				"https://assets.example.com/v1/avatar.webp?seed=grace-hopper&variant=gradient",
 			);
 		});
 
-		avatar.variant = "realistic";
-		avatar.gender = "female";
+		avatar.variant = "portrait";
+		avatar.gender = "any";
 		avatar.format = null;
 		await vi.waitFor(() => {
 			expect(avatar.shadowRoot?.querySelector("img")).toHaveAttribute(
 				"src",
-				"https://assets.example.com/v1/avatars/realistic/female/grace-hopper.webp",
+				"https://assets.example.com/v1/avatar.webp?seed=grace-hopper&variant=portrait",
 			);
 		});
+	});
+
+	test("uses avatar source size without forwarding it to the image", async () => {
+		const avatar = document.createElement("pictum-avatar");
+		avatar.seed = "customer-256";
+		avatar.variant = "portrait";
+		avatar.baseUrl = "https://assets.example.com/v1";
+		mount(avatar);
+
+		await vi.waitFor(() => {
+			expect(avatar.shadowRoot?.querySelector("img")).toHaveAttribute(
+				"src",
+				"https://assets.example.com/v1/avatar.webp?seed=customer-256&variant=portrait",
+			);
+		});
+
+		avatar.size = 256;
+		expect(avatar.size).toBe(256);
+		expect(avatar).toHaveAttribute("size", "256");
+		await vi.waitFor(() => {
+			expect(avatar.shadowRoot?.querySelector("img")).toHaveAttribute(
+				"src",
+				"https://assets.example.com/v1/avatar.webp?seed=customer-256&variant=portrait&size=256",
+			);
+		});
+		expect(avatar.shadowRoot?.querySelector("img")).not.toHaveAttribute("size");
 	});
 
 	test("renders placeholder URLs and logical dimensions", async () => {
@@ -171,7 +235,7 @@ describe("elements", () => {
 		await vi.waitFor(() => {
 			expect(element.shadowRoot?.querySelector("img")).toHaveAttribute(
 				"src",
-				"https://pictum.dev/api/v1/placeholders/640x360@3x.webp?text=Coming+soon",
+				"https://pictum.dev/v1/placeholder.webp?width=640&height=360&density=3&text=Coming+soon",
 			);
 		});
 

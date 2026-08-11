@@ -53,12 +53,15 @@ export interface PictumAvatarElement extends PictumElement {
 	variant: AvatarVariant | null;
 	gender: AvatarGender | null;
 	format: AvatarFormat | null;
+	size: number | null;
 }
 
 export interface PictumQrCodeElement extends PictumElement {
 	value: string;
 	format: QrCodeFormat | null;
 	quietZone: boolean | null;
+	foreground: string | null;
+	background: string | null;
 }
 
 export interface PictumPlaceholderElement extends PictumElement {
@@ -401,6 +404,7 @@ function createPictumElementConstructors(): PictumElementConstructors {
 			"format",
 			"gender",
 			"seed",
+			"size",
 			"variant",
 		];
 		static override elementProperties = [
@@ -409,6 +413,7 @@ function createPictumElementConstructors(): PictumElementConstructors {
 			"format",
 			"gender",
 			"seed",
+			"size",
 			"variant",
 		];
 
@@ -444,6 +449,14 @@ function createPictumElementConstructors(): PictumElementConstructors {
 			this.reflectString("format", value);
 		}
 
+		get size(): number | null {
+			return readNumberAttribute(this, "size");
+		}
+
+		set size(value: number | null) {
+			this.reflectNumber("size", value);
+		}
+
 		protected override performRender(): void {
 			if (!this.hasAttribute("seed")) {
 				this.clearAsset();
@@ -454,6 +467,7 @@ function createPictumElementConstructors(): PictumElementConstructors {
 				...(this.variant === null ? {} : { variant: this.variant }),
 				...(this.gender === null ? {} : { gender: this.gender }),
 				...(this.format === null ? {} : { format: this.format }),
+				...(this.size === null ? {} : { size: this.size }),
 			} as AvatarOptions;
 			this.renderImage(avatar(this.seed, options).url);
 		}
@@ -465,15 +479,19 @@ function createPictumElementConstructors(): PictumElementConstructors {
 	{
 		static observedAttributes = [
 			...IMAGE_ATTRIBUTES,
+			"background",
 			"base-url",
 			"format",
+			"foreground",
 			"quiet-zone",
 			"value",
 		];
 		static override elementProperties = [
 			"alt",
+			"background",
 			"baseUrl",
 			"format",
+			"foreground",
 			"quietZone",
 			"value",
 		];
@@ -502,6 +520,22 @@ function createPictumElementConstructors(): PictumElementConstructors {
 			this.reflectBoolean("quiet-zone", value);
 		}
 
+		get foreground(): string | null {
+			return this.getAttribute("foreground");
+		}
+
+		set foreground(value: string | null) {
+			this.reflectString("foreground", value);
+		}
+
+		get background(): string | null {
+			return this.getAttribute("background");
+		}
+
+		set background(value: string | null) {
+			this.reflectString("background", value);
+		}
+
 		protected override performRender(): void {
 			if (!this.hasAttribute("value")) {
 				this.clearAsset();
@@ -511,6 +545,8 @@ function createPictumElementConstructors(): PictumElementConstructors {
 				...this.pictumOptions,
 				...(this.format === null ? {} : { format: this.format }),
 				...(this.quietZone === null ? {} : { quietZone: this.quietZone }),
+				...(this.foreground === null ? {} : { foreground: this.foreground }),
+				...(this.background === null ? {} : { background: this.background }),
 			};
 			this.renderImage(qrCode(this.value, options).url);
 		}
