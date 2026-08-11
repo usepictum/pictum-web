@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.1.1 - 2026-08-11
+
+
+### Features
+
+* support avatar sizing and QR code colors by [@nhedger](https://github.com/nhedger) ([81d7f91](https://github.com/usepictum/pictum-web/commit/81d7f91aef4afab57b6c67e87ba29827b81bc55d))
+
+
+
+### Contributors
+* [@nhedger](https://github.com/nhedger)
+
+**Comparison**: https://github.com/usepictum/pictum-web/compare/v0.1.0...v0.1.1
+
 ## v0.1.0 - 2026-08-10
 
 
